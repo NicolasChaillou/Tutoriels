@@ -15,10 +15,9 @@ if not os.path.exists(fichier_label):
     quit()
 
 data=genfromtxt(fichier_label, delimiter=',')
-id_frame=0
 id_objet=0
 
-for image in glob.glob(dir_images+"*.jpg"):
+for id_frame, image in enumerate(glob.glob(dir_images+"*.jpg")):
     frame=cv2.imread(image)
 
     mask=data[:, 0]==id_frame
@@ -30,4 +29,3 @@ for image in glob.glob(dir_images+"*.jpg"):
     key=cv2.waitKey(70)&0xFF
     if key==ord('q'):
         quit()
-    id_frame+=1

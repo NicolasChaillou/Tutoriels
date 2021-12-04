@@ -43,8 +43,7 @@ def b_inception_v1(input, nbr_1, nbr_3r, nbr_3, nbr_5r, nbr_5, nbr_pool, trainin
     result4=tf.nn.max_pool(input, ksize=[1, 3, 3, 1], strides=[1, 1, 1, 1], padding='SAME')
     result4=couche_convolution(result4, 1, nbr_pool, 1, True, tf.nn.relu, training)
 
-    result=tf.concat([result1, result2, result3, result4], 3)
-    return result
+    return tf.concat([result1, result2, result3, result4], 3)
 
 def aux(input, training, nbr_classes):
     result=tf.nn.avg_pool(input, ksize=[1, 5, 5, 1], strides=[1, 3, 3, 1], padding='VALID')

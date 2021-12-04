@@ -14,15 +14,9 @@ model=model.model(config.input_model)
 rouge=(0, 0, 255)
 vert=(0, 255, 0)
 
-if True:
-  dir=config.dir_images
-  fichier="training_set.csv"
-  test=False
-else:
-  dir=config.dir_images_test
-  fichier="test_set.csv"
-  test=True
-  
+dir=config.dir_images
+fichier="training_set.csv"
+test=False
 checkpoint=tf.train.Checkpoint(model=model)
 checkpoint.restore(tf.train.latest_checkpoint("./training/"))
 
@@ -46,7 +40,7 @@ with open(fichier, newline='') as csvfile:
     cv2.ellipse(img2, (x*config.norm, y*config.norm), (petit_axe*config.norm/2, grand_axe*config.norm/2), angle*180, 0., 360., rouge, 2)
     print("Prediction", np.array(predictions[0]))
 
-    if test is False:
+    if not test:
       f_ellipse=ligne[0].split('.')[0]+"_Annotation.png"
       image_ellipse=cv2.imread(dir+f_ellipse)
       if image_ellipse is None:
@@ -63,25 +57,21 @@ with open(fichier, newline='') as csvfile:
     y=float(y*W*mm_pixel)
     axis_x=float(grand_axe*W*mm_pixel/2)
     axis_y=float(petit_axe*W*mm_pixel/2)
-    
+
     r=180.
     r_2=r/2
-    if angle>=0.5:
-      angle=angle*r-r_2
-    else:
-      angle=angle*r+r_2
-
+    angle = angle*r-r_2 if angle>=0.5 else angle*r+r_2
     HC=np.pi*np.sqrt(2*(axis_x**2+axis_y**2))
-    
+
     cv2.putText(img_originale, "HC: {:5.2f}mm".format(HC), (20, 30), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255), 2)
     print("{},{:f},{:f},{:f},{:f},{:f}    HC: {:f}mm".format(ligne[0], x, y, axis_x, axis_y, angle, HC))
     if len(ligne)==3:
       cv2.putText(img_originale, "HC: {:5.2f}mm".format(float(ligne[2])), (20, 60), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 0), 2)
       print("HC: {}mm   prediction: {:f}mm".format(ligne[2], HC))
-    
+
     cv2.imshow("Image originale", img_originale)
     cv2.imshow("Inference", img2)
-    
+
     key=cv2.waitKey()&0xFF
     if key==ord('q'):
       quit()

@@ -61,7 +61,7 @@ for video in l:
         if key==ord('q'):
             quit()
         if key==ord('a'):
-            for cpt in range(100):
+            for _ in range(100):
                 ret, frame=cap.read()
         if key==ord('f'):
             break

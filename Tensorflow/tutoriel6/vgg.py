@@ -4,14 +4,12 @@ import numpy as np
 def convolution(couche_prec, taille_noyau, nbr_noyau):
     w=tf.Variable(tf.random.truncated_normal(shape=(taille_noyau, taille_noyau, int(couche_prec.get_shape()[-1]), nbr_noyau)))
     b=np.zeros(nbr_noyau)
-    result=tf.nn.conv2d(couche_prec, w, strides=[1, 1, 1, 1], padding='SAME')+b
-    return result
+    return tf.nn.conv2d(couche_prec, w, strides=[1, 1, 1, 1], padding='SAME')+b
         
 def fc(couche_prec, nbr_neurone):
     w=tf.Variable(tf.random.truncated_normal(shape=(int(couche_prec.get_shape()[-1]), nbr_neurone), dtype=tf.float32))
     b=tf.Variable(np.zeros(shape=(nbr_neurone)), dtype=tf.float32)
-    result=tf.matmul(couche_prec, w)+b
-    return result
+    return tf.matmul(couche_prec, w)+b
 
 def vggnet(learning_rate=0.01, momentum=0.99):
     ph_images=tf.placeholder(shape=(None, 28, 28, 1), dtype=tf.float32, name='images')

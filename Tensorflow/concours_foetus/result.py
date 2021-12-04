@@ -33,13 +33,9 @@ with open("test_set.csv", newline='') as csvfile:
     y=float(y*W*mm_pixel)
     axis_x=float(grand_axe*W*mm_pixel/2)
     axis_y=float(petit_axe*W*mm_pixel/2)
-    
+
     r=np.pi
     r_2=r/2
-    if angle>=0.5:
-      angle=angle*r-r_2
-    else:
-      angle=angle*r+r_2
-
+    angle = angle*r-r_2 if angle>=0.5 else angle*r+r_2
     print("{},{:f},{:f},{:f},{:f},{:f}".format(ligne[0], x, y, axis_x, axis_y, angle))
 

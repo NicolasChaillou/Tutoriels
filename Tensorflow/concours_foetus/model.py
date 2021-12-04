@@ -10,17 +10,13 @@ def block_resnet(input, filters, kernel_size, reduce, dropout=0.):
         result=layers.Conv2D(filters, kernel_size, strides=2, padding='SAME')(result)
     else:
         result=layers.Conv2D(filters, kernel_size, strides=1, padding='SAME')(result)
-        
-    if input.shape[-1]==filters:
-        if reduce is True:
-            shortcut=layers.Conv2D(filters, 1, strides=2, padding='SAME')(input)
-        else:
-            shortcut=input
+
+    if reduce is True:
+        shortcut=layers.Conv2D(filters, 1, strides=2, padding='SAME')(input)
+    elif input.shape[-1]==filters:
+        shortcut=input
     else:
-        if reduce is True:
-            shortcut=layers.Conv2D(filters, 1, strides=2, padding='SAME')(input)
-        else:
-            shortcut=layers.Conv2D(filters, 1, strides=1, padding='SAME')(input)    
+        shortcut=layers.Conv2D(filters, 1, strides=1, padding='SAME')(input)
     result=layers.add([result, shortcut])
     if dropout is not 0.:
         result=layers.Dropout(dropout)(result)
@@ -82,11 +78,10 @@ def model(nbr):
     result=block_resnet(result, 16*nbr, 3, False, 0.5)
     result=block_resnet(result, 16*nbr, 3, False, 0.5)
     result=block_resnet(result, 16*nbr, 3, False, 0.5)
-    
-    result=layers.AveragePooling2D()(result)    
+
+    result=layers.AveragePooling2D()(result)
     result=layers.Flatten()(result)
     sortie=layers.Dense(5, activation='sigmoid')(result)
-    
-    model=models.Model(inputs=entree, outputs=sortie)
-    return model
+
+    return models.Model(inputs=entree, outputs=sortie)
 

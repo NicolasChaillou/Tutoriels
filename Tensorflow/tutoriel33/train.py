@@ -14,14 +14,15 @@ tab_labels=[]
 def rotateImage(image, angle):
     image_center=tuple(np.array(image.shape[1::-1])/2)
     rot_mat=cv2.getRotationMatrix2D(image_center, angle, 1.0)
-    result=cv2.warpAffine(image, rot_mat, image.shape[1::-1], flags=cv2.INTER_LINEAR)
-    return result
+    return cv2.warpAffine(
+        image, rot_mat, image.shape[1::-1], flags=cv2.INTER_LINEAR
+    )
 
 with open(fichier, newline='') as csvfile:
     lignes=csv.reader(csvfile, delimiter=',')
     next(lignes, None)
     for ligne in lignes:
-        label=np.array(ligne[1:], dtype=np.float32)        
+        label=np.array(ligne[1:], dtype=np.float32)
         img=cv2.imread(dir_images+ligne[0]+'.jpg')
         if img is None:
             print("Image absente", dir_images+ligne[0]+'.jpg')
@@ -33,10 +34,9 @@ with open(fichier, newline='') as csvfile:
         if label[1]:
             continue
 
-        flag=0
-        for angle in range(0, 360, 30):
+        for flag, angle in enumerate(range(0, 360, 30)):
             img_r=rotateImage(img, angle)
-            
+
             if label[2] or label[3] or label[5] or label[6]:
                 tab_labels.append(label)
                 i=cv2.flip(img_r, 0)
@@ -46,8 +46,6 @@ with open(fichier, newline='') as csvfile:
                 tab_labels.append(label)
                 i=cv2.flip(img_r, 0)
                 tab_images.append(i)
-            flag+=1
-                
             if label[2] or label[3] or label[5] or label[6]:
                 tab_labels.append(label)
                 i=cv2.flip(img_r, 1)
@@ -58,7 +56,7 @@ with open(fichier, newline='') as csvfile:
                 i=cv2.flip(img_r, -1)
                 tab_images.append(i)
 
-tab_labels=np.array(tab_labels, dtype=np.float32)        
+tab_labels=np.array(tab_labels, dtype=np.float32)
 tab_images=np.array(tab_images, dtype=np.float32)/255
 
 indices=np.random.permutation(len(tab_labels))

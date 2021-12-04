@@ -17,10 +17,7 @@ with tf.Session() as s:
         test=cv2.resize(test, (28, 28))
         for x in range(28):
             for y in range(28):
-                if test[y][x]<110:
-                    test[y][x]=1
-                else:
-                    test[y][x]=0
+                test[y][x] = 1 if test[y][x]<110 else 0
         cv2.imshow('image', cv2.resize(test, (120, 120))*255)
         prediction=s.run(sortie, feed_dict={images: [test.reshape(28, 28, 1)], is_training: False})
         print(prediction, np.argmax(prediction))

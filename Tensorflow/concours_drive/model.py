@@ -47,7 +47,7 @@ def model(nbr):
 
     result=layers.UpSampling2D()(result)
     result=tf.concat([result, result3], axis=3)
-    
+
     result=layers.Conv2D(4*nbr, 3, activation='relu', padding='same')(result)
     result=layers.BatchNormalization()(result)
     result=layers.Conv2D(2*nbr, 3, activation='relu', padding='same')(result)
@@ -55,15 +55,15 @@ def model(nbr):
 
     result=layers.UpSampling2D()(result)
     result=tf.concat([result, result2], axis=3)
-    
+
     result=layers.Conv2D(2*nbr, 3, activation='relu', padding='same')(result)
     result=layers.BatchNormalization()(result)
     result=layers.Conv2D(nbr, 3, activation='relu', padding='same')(result)
     result=layers.BatchNormalization()(result)
-    
+
     result=layers.UpSampling2D()(result)
     result=tf.concat([result, result1], axis=3)
-    
+
     result=layers.Conv2D(nbr, 3, activation='relu', padding='same')(result)
     result=layers.BatchNormalization()(result)
     result=layers.Conv2D(nbr, 3, activation='relu', padding='same')(result)
@@ -71,5 +71,4 @@ def model(nbr):
 
     sortie=layers.Conv2D(1, 1, activation='sigmoid', padding='same')(result)
 
-    model=models.Model(inputs=entree, outputs=sortie)
-    return model
+    return models.Model(inputs=entree, outputs=sortie)

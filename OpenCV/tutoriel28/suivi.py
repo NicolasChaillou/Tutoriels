@@ -20,22 +20,15 @@ taille_objet=15
 def dessine_point(tab_point):
     for i in range(len(tab_point)):
         if tab_point[nbr_point-i-1, 0]!=-1:
-            if degrade:
-                couleur=(0, 255-2*(nbr_point-i-1), 0)
-            else:
-                couleur=(0, 255, 0)
+            couleur = (0, 255-2*(nbr_point-i-1), 0) if degrade else (0, 255, 0)
             cv2.circle(frame, (tab_point[nbr_point-i-1, 0], tab_point[nbr_point-i-1, 1]), 5, couleur, 10)
 
 def dessine_ligne(tab_point):
     old_x, old_y=(-1, -1)
     for i in range(nbr_point):
-        if tab_point[nbr_point-i-1, 0]!=-1:
-            if old_x!=-1:
-                if degrade:
-                    couleur=(0, 255-2*(nbr_point-i-1), 0)
-                else:
-                    couleur=(0, 255, 0)
-                cv2.line(frame, (old_x, old_y), (tab_point[nbr_point-i-1, 0], tab_point[nbr_point-i-1, 1]), couleur, 10)
+        if tab_point[nbr_point - i - 1, 0] != -1 and old_x != -1:
+            couleur = (0, 255-2*(nbr_point-i-1), 0) if degrade else (0, 255, 0)
+            cv2.line(frame, (old_x, old_y), (tab_point[nbr_point-i-1, 0], tab_point[nbr_point-i-1, 1]), couleur, 10)
         old_x, old_y=(tab_point[nbr_point-i-1, 0], tab_point[nbr_point-i-1, 1])
 
 while True:

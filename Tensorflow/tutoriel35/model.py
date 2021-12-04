@@ -2,8 +2,8 @@ from tensorflow.keras import layers, models
 
 def generator_model():
     entree=layers.Input(shape=(100), dtype='float32')
-    
-    result=layers.Dense(7*7*256, use_bias=False)(entree)
+
+    result = layers.Dense(7**2 * 256, use_bias=False)(entree)
     result=layers.BatchNormalization()(result)
     result=layers.LeakyReLU()(result)
 
@@ -19,8 +19,7 @@ def generator_model():
 
     sortie=layers.Conv2DTranspose(1, (5, 5), strides=(2, 2), padding='same', use_bias=False, activation='tanh')(result)
 
-    model=models.Model(inputs=entree, outputs=sortie)
-    return model
+    return models.Model(inputs=entree, outputs=sortie)
 
 def discriminator_model():
     entree=layers.Input(shape=(28, 28, 1), dtype='float32')
@@ -36,5 +35,4 @@ def discriminator_model():
     result=layers.Flatten()(result)
     sortie=layers.Dense(1)(result)
 
-    model=models.Model(inputs=entree, outputs=sortie)
-    return model
+    return models.Model(inputs=entree, outputs=sortie)

@@ -42,8 +42,7 @@ def my_model(nbr_inputs, nbr_hidden, nbr_actions):
     action=layers.Dense(nbr_actions, activation="softmax")(common)
     critic=layers.Dense(1)(common)
 
-    model=keras.Model(inputs=entree, outputs=[action, critic])
-    return model
+    return keras.Model(inputs=entree, outputs=[action, critic])
 
 model=my_model(nbr_inputs, 32, nbr_actions)
 
@@ -63,7 +62,7 @@ while True:
     with tf.GradientTape() as tape:
 
         # Récupération de données
-        for timestep in range(1, max_steps_per_episode):
+        for _ in range(1, max_steps_per_episode):
             action_probs, critic_value=model(np.expand_dims(state, axis=0))
             critic_value_history.append(critic_value[0, 0])
             action=np.random.choice(nbr_actions, p=np.squeeze(action_probs))

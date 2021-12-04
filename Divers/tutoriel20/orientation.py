@@ -28,10 +28,10 @@ while True:
         cosb=min((math.pow(d2, 2)-math.pow(d1, 2)+math.pow(d_eyes, 2))/(2*d2*d_eyes), 1)
         a3=int(250*(d2*math.sin(math.acos(cosb))-coeff/4)/coeff)
 
-        for n in range(0, 68):
+        for n in range(68):
             x=landmarks.part(n).x
             y=landmarks.part(n).y
-            if n==30 or n==36 or n==45:
+            if n in [30, 36, 45]:
                 cv2.circle(i, (x, y), 3, (255, 255, 0), -1)
             else:
                 cv2.circle(i, (x, y), 3, (255, 0, 0), -1)

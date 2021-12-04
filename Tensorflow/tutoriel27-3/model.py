@@ -11,18 +11,14 @@ def block_resnet(input, filters, kernel_size, reduce=False):
         result=layers.Conv2D(filters, kernel_size, strides=2, padding='SAME')(result)
     else:
         result=layers.Conv2D(filters, kernel_size, strides=1, padding='SAME')(result)
-        
-    if input.shape[-1]==filters:
-        if reduce is True:
-            shortcut=layers.Conv2D(filters, 1, strides=2, padding='SAME')(input)
-        else:
-            shortcut=input
+
+    if reduce is True:
+        shortcut=layers.Conv2D(filters, 1, strides=2, padding='SAME')(input)
+    elif input.shape[-1]==filters:
+        shortcut=input
     else:
-        if reduce is True:
-            shortcut=layers.Conv2D(filters, 1, strides=2, padding='SAME')(input)
-        else:
-            shortcut=layers.Conv2D(filters, 1, strides=1, padding='SAME')(input)
-    
+        shortcut=layers.Conv2D(filters, 1, strides=1, padding='SAME')(input)
+
     result=layers.add([result, shortcut])
     result=layers.LeakyReLU(alpha=0.1)(result)
     result=layers.BatchNormalization()(result)
@@ -48,7 +44,5 @@ def model(nbr_classes, nbr_boxes, cellule_y, cellule_x):
     result=layers.Conv2D(nbr_boxes*(5+nbr_classes), 1, padding='SAME')(result)
     sortie=layers.Reshape((cellule_y, cellule_x, nbr_boxes, 5+nbr_classes))(result)
 
-    model=models.Model(inputs=entree, outputs=sortie)
-
-    return model
+    return models.Model(inputs=entree, outputs=sortie)
 

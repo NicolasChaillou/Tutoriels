@@ -4,7 +4,7 @@ import numpy as np
 def moyenne_image(video, nbr):
     cap=cv2.VideoCapture(video)
     tab_image=[]
-    for f in range(nbr):
+    for _ in range(nbr):
         ret, frame=cap.read()
         if ret is False:
             break

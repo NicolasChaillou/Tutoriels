@@ -99,48 +99,48 @@ with detection_graph.as_default():
     tf.import_graph_def(od_graph_def, name='')
 
 with detection_graph.as_default():
-    with tf.Session() as sess:
-        cap=cv2.VideoCapture(0)
-        ops=tf.get_default_graph().get_operations()
-        all_tensor_names={output.name for op in ops for output in op.outputs}
-        tensor_dict={}
-        for key in [
-            'num_detections', 'detection_boxes', 'detection_scores',
-            'detection_classes', 'detection_masks']:
-            tensor_name=key+':0'
-            if tensor_name in all_tensor_names:
-                tensor_dict[key]=tf.get_default_graph().get_tensor_by_name(tensor_name)
-        if 'detection_masks' in tensor_dict:
-            quit("Masque non géré")
-        image_tensor=tf.get_default_graph().get_tensor_by_name('image_tensor:0')
+  with tf.Session() as sess:
+    cap=cv2.VideoCapture(0)
+    ops=tf.get_default_graph().get_operations()
+    all_tensor_names={output.name for op in ops for output in op.outputs}
+    tensor_dict={}
+    for key in [
+        'num_detections', 'detection_boxes', 'detection_scores',
+        'detection_classes', 'detection_masks']:
+        tensor_name=key+':0'
+        if tensor_name in all_tensor_names:
+            tensor_dict[key]=tf.get_default_graph().get_tensor_by_name(tensor_name)
+    if 'detection_masks' in tensor_dict:
+        quit("Masque non géré")
+    image_tensor=tf.get_default_graph().get_tensor_by_name('image_tensor:0')
 
-        while True:
-            ret, frame=cap.read()
-            tickmark=cv2.getTickCount()
-            output_dict=sess.run(tensor_dict, feed_dict={image_tensor: np.expand_dims(frame, 0)})
-            nbr_object=int(output_dict['num_detections'])
-            classes=output_dict['detection_classes'][0].astype(np.uint8)
-            boxes=output_dict['detection_boxes'][0]
-            scores=output_dict['detection_scores'][0]
-            for objet in range(nbr_object):
-                ymin, xmin, ymax, xmax=boxes[objet]
-                if scores[objet]>0.30:
-                    height, width=frame.shape[:2]
-                    xmin=int(xmin*width)
-                    xmax=int(xmax*width)
-                    ymin=int(ymin*height)
-                    ymax=int(ymax*height)
-                    cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), color_infos, 1)
-                    txt="{:s}:{:3.0%}".format(labels[classes[objet]], scores[objet])
-                    cv2.putText(frame, txt, (xmin, ymin-5), cv2.FONT_HERSHEY_PLAIN, 1, color_infos, 2)
-            fps=cv2.getTickFrequency()/(cv2.getTickCount()-tickmark)
-            cv2.putText(frame, "FPS: {:05.2f}".format(fps), (10, 20), cv2.FONT_HERSHEY_PLAIN, 1, color_infos, 2)
-            cv2.imshow('image', frame)
-            key=cv2.waitKey(1)&0xFF
-            if key==ord('a'):
-                for objet in range(500):
-                    ret, frame=cap.read()
-            if key==ord('q'):
-              break
+    while True:
+      ret, frame=cap.read()
+      tickmark=cv2.getTickCount()
+      output_dict=sess.run(tensor_dict, feed_dict={image_tensor: np.expand_dims(frame, 0)})
+      nbr_object=int(output_dict['num_detections'])
+      classes=output_dict['detection_classes'][0].astype(np.uint8)
+      boxes=output_dict['detection_boxes'][0]
+      scores=output_dict['detection_scores'][0]
+      for objet in range(nbr_object):
+          ymin, xmin, ymax, xmax=boxes[objet]
+          if scores[objet]>0.30:
+              height, width=frame.shape[:2]
+              xmin=int(xmin*width)
+              xmax=int(xmax*width)
+              ymin=int(ymin*height)
+              ymax=int(ymax*height)
+              cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), color_infos, 1)
+              txt="{:s}:{:3.0%}".format(labels[classes[objet]], scores[objet])
+              cv2.putText(frame, txt, (xmin, ymin-5), cv2.FONT_HERSHEY_PLAIN, 1, color_infos, 2)
+      fps=cv2.getTickFrequency()/(cv2.getTickCount()-tickmark)
+      cv2.putText(frame, "FPS: {:05.2f}".format(fps), (10, 20), cv2.FONT_HERSHEY_PLAIN, 1, color_infos, 2)
+      cv2.imshow('image', frame)
+      key=cv2.waitKey(1)&0xFF
+      if key==ord('a'):
+        for _ in range(500):
+          ret, frame=cap.read()
+      if key==ord('q'):
+        break
 cap.release()
 cv2.destroyAllWindows()

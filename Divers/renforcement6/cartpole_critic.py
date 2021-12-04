@@ -24,17 +24,15 @@ end_epsilon=max_episode
 epsilon_decay_value=epsilon/(end_epsilon-start_epsilon)
 
 def model():
-  entree=layers.Input(shape=(4), dtype='float32')
-  result=layers.Dense(32, activation='relu')(entree)
-  result=layers.Dense(32, activation='relu')(result)
-  sortie=layers.Dense(nbr_action)(result)
+    entree=layers.Input(shape=(4), dtype='float32')
+    result=layers.Dense(32, activation='relu')(entree)
+    result=layers.Dense(32, activation='relu')(result)
+    sortie=layers.Dense(nbr_action)(result)
 
-  model=models.Model(inputs=entree, outputs=sortie)
-  return model
+    return models.Model(inputs=entree, outputs=sortie)
 
 def my_loss(target_q, predicted_q):
-  loss=tf.reduce_mean(tf.math.square(target_q-predicted_q))
-  return loss
+    return tf.reduce_mean(tf.math.square(target_q-predicted_q))
 
 @tf.function
 def train_step(reward, action, observation, next_observation, done):

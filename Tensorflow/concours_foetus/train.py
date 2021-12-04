@@ -25,7 +25,7 @@ def my_loss(labels, preds):
     lambda_xy=5
     lambda_Aa=5
     lambda_angle=1
-    
+
     preds_xy=preds[:, 0:2]
     preds_Aa=preds[:, 2:4]
     preds_angle=preds[:, 4]
@@ -33,13 +33,12 @@ def my_loss(labels, preds):
     labels_xy=labels[:, 0:2]
     labels_Aa=labels[:, 2:4]
     labels_angle=labels[:, 4]
-    
+
     loss_xy=tf.reduce_sum(tf.math.square(preds_xy-labels_xy), axis=-1)
     loss_Aa=tf.reduce_sum(tf.math.square(preds_Aa-labels_Aa), axis=-1)
     loss_angle=tf.math.square(preds_angle-labels_angle)
-    
-    loss=lambda_xy*loss_xy+lambda_Aa*loss_Aa+lambda_angle*loss_angle
-    return loss
+
+    return lambda_xy*loss_xy+lambda_Aa*loss_Aa+lambda_angle*loss_angle
 
 model=model.model(config.input_model)
 

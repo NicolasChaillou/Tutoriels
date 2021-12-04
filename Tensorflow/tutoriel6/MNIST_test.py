@@ -19,11 +19,10 @@ with tf.Session() as s:
         image=cv2.imread("/home/laurent/chiffre.png", cv2.IMREAD_GRAYSCALE)
         image=cv2.resize(image, (28, 28))
         image=image.reshape(28, 28, 1)/255
-        test_images=[]
-        test_images.append(image)
+        test_images = [image]
         test_images=np.asarray(test_images)
         #cv2.imshow('image', test_images[0])
-        for i in mnist_test_images[0:10]:
+        for i in mnist_test_images[:10]:
         #for i in test_images:
             prediction=s.run(sortie, feed_dict={images: [i], is_training: False})
             print(prediction, np.argmax(prediction))

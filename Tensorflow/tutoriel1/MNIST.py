@@ -52,7 +52,7 @@ with tf.Session() as s:
             tab_acc.append(acc)
         print("accuracy train:", np.mean(tab_acc))
         tab_acc_train.append(1-np.mean(tab_acc))
-        
+
         tab_acc=[]
         for batch in range(0, len(mnist_test_images), taille_batch):
             acc=s.run(accuracy, feed_dict={
@@ -62,7 +62,7 @@ with tf.Session() as s:
             tab_acc.append(acc)
         print("accuracy test :", np.mean(tab_acc))
         tab_acc_test.append(1-np.mean(tab_acc))
-        
+
     plot.ylim(0, 1)
     plot.grid()
     plot.plot(tab_acc_train, label="Train error")
@@ -70,7 +70,7 @@ with tf.Session() as s:
     plot.legend(loc="upper right")
     plot.show()
 
-    resulat=s.run(scso, feed_dict={ph_images: mnist_test_images[0:taille_batch]})
+    resulat = s.run(scso, feed_dict={ph_images: mnist_test_images[:taille_batch]})
     np.set_printoptions(formatter={'float': '{:0.3f}'.format})
     for image in range(taille_batch):
         print("image", image)

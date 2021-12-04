@@ -46,7 +46,7 @@ for file in files:
         nbr+=len(lot)
 
 tab_labels=np.concatenate([tab_labels, np.full(nbr, 0)])
-        
+
 print("Image autres panneaux:", nbr)
 
 nbr_np=int(len(tab_images)/2)
@@ -55,7 +55,7 @@ print("nbr_np", nbr_np)
 id=1
 nbr=0
 tab=[]
-for cpt in range(nbr_np):
+for _ in range(nbr_np):
     file=common.dir_images_sans_panneaux+"/{:d}.png".format(id)
     if not os.path.isfile(file):
         break

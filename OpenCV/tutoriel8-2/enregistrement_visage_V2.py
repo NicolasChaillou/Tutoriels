@@ -20,7 +20,7 @@ cap=cv2.VideoCapture(video)
 
 if not os.path.isdir(img_non_classees):
     os.mkdir(img_non_classees)
-    
+
 id=0
 while True:
     ret, frame=cap.read()
@@ -39,7 +39,7 @@ while True:
     if key==ord('a'):
         for cpt in range(100):
             ret, frame=cap.read()
-    for cpt in range(4):
+    for _ in range(4):
         ret, frame=cap.read()
 
 cap.release()

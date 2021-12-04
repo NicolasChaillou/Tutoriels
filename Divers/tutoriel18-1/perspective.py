@@ -36,11 +36,10 @@ while True:
                 pts1=np.float32([points[0], points[1], points[3], points[2]])
             else:
                 pts1=np.float32([points[0], points[1], points[2], points[3]])
+        elif points[3][0]<points[2][0]:
+            pts1=np.float32([points[1], points[0], points[3], points[2]])
         else:
-            if points[3][0]<points[2][0]:
-                pts1=np.float32([points[1], points[0], points[3], points[2]])
-            else:
-                pts1=np.float32([points[1], points[0], points[2], points[3]])
+            pts1=np.float32([points[1], points[0], points[2], points[3]])
         pts2=np.float32([[0, 0], [taille_grille, 0], [0, taille_grille], [taille_grille, taille_grille]])
         M=cv2.getPerspectiveTransform(pts1, pts2)
         grille=cv2.warpPerspective(frame, M, (taille_grille, taille_grille))

@@ -14,6 +14,7 @@ ret, originale=cap.read()
 originale=cv2.cvtColor(originale, cv2.COLOR_BGR2GRAY)
 originale=cv2.GaussianBlur(originale, (kernel_blur, kernel_blur), 0)
 kernel_dilate=np.ones((5, 5), np.uint8)
+intrus=0
 while True:
     ret, frame=cap.read()
     gray=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -34,7 +35,6 @@ while True:
     cv2.imshow("frame", frame)
     cv2.imshow("contour", frame_contour)
     cv2.imshow("mask", mask)
-    intrus=0
     key=cv2.waitKey(30)&0xFF
     if key==ord('q'):
         break

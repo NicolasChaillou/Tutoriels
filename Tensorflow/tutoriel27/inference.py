@@ -24,10 +24,12 @@ grid=np.meshgrid(np.arange(config.cellule_x, dtype=np.float32), np.arange(config
 grid=np.expand_dims(np.stack(grid, axis=-1), axis=2)
 grid=np.tile(grid, (1, 1, config.nbr_boxes, 1))
 
+tab_boxes=[]
+conf=[]
 for i in range(len(images)):
   img=common.prepare_image(images[i], labels[i], False)
   predictions=model(np.array([images[i]]))
-  
+
   pred_boxes=predictions[0, :, :, :, 0:4]
   pred_conf=common.sigmoid(predictions[0, :, :, :, 4])
   pred_classes=common.softmax(predictions[0, :, :, :, 5:])
@@ -42,9 +44,7 @@ for i in range(len(images)):
   y_min=(y_center-h/2).astype(np.int32)
   x_max=(x_center+w/2).astype(np.int32)
   y_max=(y_center+h/2).astype(np.int32)
-  
-  tab_boxes=[]
-  conf=[]
+
   for y in range(config.cellule_y):
     for x in range(config.cellule_x):
       for b in range(config.nbr_boxes):
@@ -57,7 +57,7 @@ for i in range(len(images)):
 
   cv2.imshow("Inference", images[i])
   cv2.imshow("Bonne reponse", img)
-    
+
   key=cv2.waitKey()&0xFF
   if key==ord('q'):
     quit()

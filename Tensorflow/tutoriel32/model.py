@@ -31,13 +31,12 @@ def model(nbr_sortie, nbr_cc):
     result=layers.Conv2D(4*nbr_cc, 3, activation='relu', padding='same')(result)
     result=layers.BatchNormalization()(result)
     result=layers.MaxPool2D()(result)
-    
+
     result=layers.Flatten()(result)
     result=layers.Dense(1024, activation='relu')(result)
     result=layers.Dense(1024, activation='relu')(result)
     result=layers.BatchNormalization()(result)
     sortie=layers.Dense(nbr_sortie, activation='softmax')(result)
 
-    model=models.Model(inputs=entree, outputs=sortie)
-    return model
+    return models.Model(inputs=entree, outputs=sortie)
 

@@ -30,14 +30,14 @@ def calcul_map(model, dataset, beta=1., seuil=0.5):
   tab_nbr_reponse=[]
   tab_tp=[]
   tab_true_boxes=[]
-  
+
   for images, labels in dataset:
     predictions=np.array(model(images))
 
     pred_conf=common.sigmoid(predictions[:, :, :, :, 4])
     pred_classes=common.softmax(predictions[:, :, :, :, 5:])
     pred_ids=np.argmax(pred_classes, axis=-1)
-    
+
     x_center=((grid[:, :, :, :, 0]+common.sigmoid(predictions[:, :, :, :, 0]))*config.r_x)
     y_center=((grid[:, :, :, :, 1]+common.sigmoid(predictions[:, :, :, :, 1]))*config.r_y)
     w=(np.exp(predictions[:, :, :, :, 2])*config.anchors[:, 0]*config.r_x)
@@ -57,7 +57,7 @@ def calcul_map(model, dataset, beta=1., seuil=0.5):
       nbr_reponse=np.zeros(config.nbr_classes)
       tp=np.zeros(config.nbr_classes)
       nbr_true_boxes=np.zeros(config.nbr_classes)
-      tab_index=tf.image.non_max_suppression(tab_boxes[p], pred_conf[p], 100)      
+      tab_index=tf.image.non_max_suppression(tab_boxes[p], pred_conf[p], 100)
       for id in tab_index:
         if pred_conf[p, id]>0.10:
           nbr_reponse[pred_ids[p, id]]+=1
@@ -77,8 +77,8 @@ def calcul_map(model, dataset, beta=1., seuil=0.5):
       tab_nbr_reponse.append(nbr_reponse)
       tab_tp.append(tp)
       tab_true_boxes.append(nbr_true_boxes)
-      
-      index_labels2=index_labels2+1
+
+      index_labels2 += 1
 
   tab_nbr_reponse=np.array(tab_nbr_reponse)
   tab_tp=np.array(tab_tp)
@@ -90,10 +90,10 @@ def calcul_map(model, dataset, beta=1., seuil=0.5):
 
   rappel_globule_rouge=tab_tp[:, 1]/(tab_true_boxes[:, 1]+1E-7)
   rappel_trophozoite=tab_tp[:, 4]/(tab_true_boxes[:, 4]+1E-7)
-    
+
   print("F1 score globule rouge", np.mean(2*precision_globule_rouge*rappel_globule_rouge/(precision_globule_rouge+rappel_globule_rouge+1E-7)))
   print("F1 score trophozoite", np.mean(2*precision_trophozoite*rappel_trophozoite/(precision_trophozoite+rappel_trophozoite+1E-7)))
-  
+
   precision=(precision_globule_rouge+precision_trophozoite)/2
   rappel=(rappel_globule_rouge+rappel_trophozoite)/2
 
@@ -104,7 +104,7 @@ def calcul_map(model, dataset, beta=1., seuil=0.5):
   precision=tab_tp/(tab_nbr_reponse+1E-7)
   rappel=tab_tp/(tab_true_boxes+1E-7)
   score=np.mean((1+beta*beta)*precision*rappel/(beta*beta*precision+rappel+1E-7))
-  
+
   return score
 
 score=calcul_map(model, dataset)
