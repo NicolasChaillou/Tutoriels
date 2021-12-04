@@ -11,9 +11,8 @@ def souris(event, x, y, flags, param):
         if flags<0:
             if color>5:
                 color-=1
-        else:
-            if color<250:
-                color+=1
+        elif color<250:
+            color+=1
     lo[0]=color-marge
     hi[0]=color+marge
 

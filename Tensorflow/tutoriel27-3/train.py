@@ -24,7 +24,7 @@ def my_loss(labels, preds):
     grid=tf.meshgrid(tf.range(config.cellule_x, dtype=tf.float32), tf.range(config.cellule_y, dtype=tf.float32))
     grid=tf.expand_dims(tf.stack(grid, axis=-1), axis=2)
     grid=tf.tile(grid, (1, 1, config.nbr_boxes, 1))
-    
+
     preds_xy    =tf.math.sigmoid(preds[:, :, :, :, 0:2])+grid
     preds_wh    =preds[:, :, :, :, 2:4]
     preds_conf  =tf.math.sigmoid(preds[:, :, :, :, 4])
@@ -38,7 +38,7 @@ def my_loss(labels, preds):
     l2_xy_min=labels2[:, :, 0:2]
     l2_xy_max=labels2[:, :, 2:4]
     l2_area  =labels2[:, :, 4]
-    
+
     preds_xymin=tf.expand_dims(preds_xymin, 4)
     preds_xymax=tf.expand_dims(preds_xymax, 4)
     preds_areas=tf.expand_dims(preds_areas, 4)
@@ -46,10 +46,10 @@ def my_loss(labels, preds):
     labels_xy    =labels[:, :, :, :, 0:2]
     labels_wh    =tf.math.log(labels[:, :, :, :, 2:4]/config.anchors)
     labels_wh=tf.where(tf.math.is_inf(labels_wh), tf.zeros_like(labels_wh), labels_wh)
-    
+
     conf_mask_obj=labels[:, :, :, :, 4]
     labels_classe=labels[:, :, :, :, 5:]
-    
+
     conf_mask_noobj=[]
     for i in range(len(preds)):
         xy_min=tf.maximum(preds_xymin[i], l2_xy_min[i])
@@ -79,9 +79,14 @@ def my_loss(labels, preds):
 
     loss_classe=tf.reduce_sum(tf.math.square(preds_classe-labels_classe), axis=4)
     loss_classe=tf.reduce_sum(conf_mask_obj*loss_classe, axis=(1, 2, 3))
-    
-    loss=config.lambda_coord*loss_xy+config.lambda_coord*loss_wh+loss_conf_obj+config.lambda_noobj*loss_conf_noobj+loss_classe
-    return loss
+
+    return (
+        config.lambda_coord * loss_xy
+        + config.lambda_coord * loss_wh
+        + loss_conf_obj
+        + config.lambda_noobj * loss_conf_noobj
+        + loss_classe
+    )
 
 model=model.model(config.nbr_classes, config.nbr_boxes, config.cellule_y, config.cellule_x)
 

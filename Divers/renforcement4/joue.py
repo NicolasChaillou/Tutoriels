@@ -16,8 +16,7 @@ decalage_debut=90
 taille_sequence=6
 
 def transform_img(image):
-  result=np.expand_dims(image[:170, :, 0], axis=-1)
-  return result
+  return np.expand_dims(image[:170, :, 0], axis=-1)
 
 def joue():
 
@@ -27,7 +26,7 @@ def joue():
   for i in range(decalage_debut-taille_sequence):
     env.step(0)
   tab_sequence=[]
-  for i in range(taille_sequence):
+  for _ in range(taille_sequence):
     observation, reward, done, info=env.step(0)
     img=transform_img(observation)
     tab_sequence.append(img)
@@ -48,7 +47,7 @@ def joue():
     if done:
       print("\nSCORE:", score)
       return tab_img, score
-    
+
     observation, reward, done, info=env.step(action+1)
     if reward>10:
       print("MIAM", reward, end=" ")

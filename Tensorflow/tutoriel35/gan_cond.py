@@ -10,7 +10,7 @@ batch_size=256
 epochs=500
 noise_dim=100
 tab_size=6
-num_examples_to_generate=tab_size*tab_size
+num_examples_to_generate = tab_size**2
 dir_images='images_gan_cond'
 checkpoint_dir='./training_checkpoints_gan_cond'
 checkpoint_prefix=os.path.join(checkpoint_dir, "ckpt")
@@ -30,8 +30,7 @@ train_dataset=tf.data.Dataset.from_tensor_slices((train_images, train_labels)).s
 def discriminator_loss(real_output, fake_output):
     real_loss=cross_entropy(tf.ones_like(real_output), real_output)
     fake_loss=cross_entropy(tf.zeros_like(fake_output), fake_output)
-    total_loss=real_loss+fake_loss
-    return total_loss
+    return real_loss+fake_loss
 
 def generator_loss(fake_output):
     return cross_entropy(tf.ones_like(fake_output), fake_output)

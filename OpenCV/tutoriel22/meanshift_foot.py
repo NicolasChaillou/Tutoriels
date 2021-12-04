@@ -63,7 +63,7 @@ while True:
     if key==ord('m'):
         seuil=max(1, seuil-1)
     if key==ord('a'):
-        for cpt in range(1800):
+        for _ in range(1800):
             ret, frame=video.read()
 
 video.release()

@@ -20,9 +20,9 @@ while True:
     if key==ord('q'):
         break
     if key==ord('a'):
-        for cpt in range(100):
+        for _ in range(100):
             ret, frame=cap.read()
-    for cpt in range(4):
+    for _ in range(4):
         ret, frame=cap.read()
 cap.release()
 cv2.destroyAllWindows()

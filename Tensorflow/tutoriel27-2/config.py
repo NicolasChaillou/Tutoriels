@@ -7,10 +7,7 @@ dict={'leukocyte':     (255, 255, 0  ),
       'trophozoite':   (255, 0  , 0  ),
       'difficult':     (0  , 0  , 0  ),
       'gametocyte':    (0  , 255, 255)}
-dict2=[]
-for d in dict:
-    dict2.append(d)
-
+dict2 = list(dict)
 largeur=256
 hauteur=192
 cellule_x=16
@@ -29,5 +26,5 @@ lambda_coord=5
 lambda_noobj=0.5
 #lambda_coord=1
 #lambda_noobj=1
-    
+
 seuil_iou_loss=0.6

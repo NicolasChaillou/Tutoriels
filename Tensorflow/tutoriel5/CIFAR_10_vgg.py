@@ -16,21 +16,18 @@ def read_cifar_file(file, images, labels):
 def convolution(couche_prec, taille_noyau, nbr_noyau):
     w=tf.Variable(tf.random.truncated_normal(shape=(taille_noyau, taille_noyau, int(couche_prec.get_shape()[-1]), nbr_noyau)))
     b=np.zeros(nbr_noyau)
-    result=tf.nn.conv2d(couche_prec, w, strides=[1, 1, 1, 1], padding='SAME')+b
-    return result
+    return tf.nn.conv2d(couche_prec, w, strides=[1, 1, 1, 1], padding='SAME')+b
         
 def fc(couche_prec, nbr_neurone):
     w=tf.Variable(tf.random.truncated_normal(shape=(int(couche_prec.get_shape()[-1]), nbr_neurone), dtype=tf.float32))
     b=tf.Variable(np.zeros(shape=(nbr_neurone)), dtype=tf.float32)
-    result=tf.matmul(couche_prec, w)+b
-    return result
+    return tf.matmul(couche_prec, w)+b
 
 def normalisation(couche_prec):
     mean, var=tf.nn.moments(couche_prec, [0])
     scale=tf.Variable(tf.ones(shape=(np.shape(couche_prec)[-1])))
     beta=tf.Variable(tf.zeros(shape=(np.shape(couche_prec)[-1])))
-    result=tf.nn.batch_normalization(couche_prec, mean, var, beta, scale, 0.001)
-    return result
+    return tf.nn.batch_normalization(couche_prec, mean, var, beta, scale, 0.001)
 
 taille_batch=100
 nbr_entrainement=200
@@ -48,7 +45,7 @@ read_cifar_file("cifar-10-batches-bin/data_batch_5.bin", train_images, train_lab
 test_images=[]
 test_labels=[]
 read_cifar_file("cifar-10-batches-bin/test_batch.bin", test_images, test_labels)
-    
+
 ph_images=tf.placeholder(shape=(None, 32, 32, 3), dtype=tf.float32)
 ph_labels=tf.placeholder(shape=(None, 10), dtype=tf.float32)
 
@@ -151,8 +148,8 @@ with tf.Session() as s:
     plot.plot(tab_test, label="Test error")
     plot.legend(loc="upper right")
     plot.show()
-    
-    resulat=s.run(socs, feed_dict={ph_images: test_images[0:taille_batch]})
+
+    resulat = s.run(socs, feed_dict={ph_images: test_images[:taille_batch]})
     np.set_printoptions(formatter={'float': '{:0.3f}'.format})
     for image in range(taille_batch):
         print("image", image)

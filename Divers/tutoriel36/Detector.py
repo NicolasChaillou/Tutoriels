@@ -24,10 +24,7 @@ def detect_inrange(image, surface):
 
 def detect_visage(image):
     face_cascade=cv2.CascadeClassifier("./haarcascade_frontalface_alt2.xml")
-    points=[]
     gray=cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     face=face_cascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=3)
-    for x, y, w, h in face:
-        points.append(np.array([int(x+w/2), int(y+h/2)]))
-
+    points = [np.array([int(x+w/2), int(y+h/2)]) for x, y, w, h in face]
     return points, None

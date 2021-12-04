@@ -101,13 +101,6 @@ for dir in ['dataA/', 'dataB/', 'dataC/', 'dataD/']:
         img_mask_result[:,:,0][img_mask==7]=1.
         img_mask_result[:,:,1][img_mask==9]=1.
         tab_mask.append(img_mask_result)
-        if False:
-            cv2.imshow("mask 7", img_mask_result[:,:,0]*255)
-            cv2.imshow("mask 9", img_mask_result[:,:,1]*255)
-            key=cv2.waitKey()&0xFF
-            if key==ord('q'):
-                quit()
-
 tab_img=np.array(tab_img)
 tab_mask=np.array(tab_mask)
 

@@ -29,7 +29,7 @@ for video in l:
     cap=cv2.VideoCapture(video_dir+"/"+video)
 
     print("video:", video)
-    id_panneau=-1    
+    id_panneau=-1
     while True:
         ret, frame=cap.read()
         if ret is False:
@@ -62,9 +62,9 @@ for video in l:
         if key==ord('q'):
             quit()
         if key==ord('a'):
-            for cpt in range(100):
+            for _ in range(100):
                 ret, frame=cap.read()
         if key==ord('f'):
             break
-                
+
 cv2.destroyAllWindows()

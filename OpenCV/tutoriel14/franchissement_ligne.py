@@ -60,24 +60,22 @@ while True:
             cv2.circle(image, (s1+xmin1, ymin), 3, (0, 255, 0), 3)
             s1_old=s1
             s1_time=time.time()
+        elif time.time()-s1_time<1:
+            cv2.circle(image, (s1_old+xmin1, ymin), 3, (100, 255, 255), 3)
+            s1=s1_old
         else:
-            if time.time()-s1_time<1:
-                cv2.circle(image, (s1_old+xmin1, ymin), 3, (100, 255, 255), 3)
-                s1=s1_old
-            else:
-                s1=-1
+            s1=-1
 
         s2=point(capteur2[0])
         if s2!=-1:
             cv2.circle(image, (s2+xmin2, ymin), 3, (0, 255, 0), 3)
             s2_old=s2
             s2_time=time.time()
+        elif time.time()-s2_time<1:
+            cv2.circle(image, (s2_old+xmin2, ymin), 3, (100, 255, 255), 3)
+            s2=s2_old
         else:
-            if time.time()-s2_time<1:
-                cv2.circle(image, (s2_old+xmin2, ymin), 3, (100, 255, 255), 3)
-                s2=s2_old
-            else:
-                s2=-1
+            s2=-1
 
         if s1!=-1 and s2!=-1:
             s2_=abs(xmax2-xmin2-s2)
@@ -137,7 +135,7 @@ while True:
     if key==ord('s'):
         stop=not stop
     if key==ord('a'):
-        for cpt in range(200):
+        for _ in range(200):
             ret, frame=cap.read()
             image=frame.copy()
 

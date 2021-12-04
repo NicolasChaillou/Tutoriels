@@ -30,10 +30,10 @@ objets_KF=[]
 objets_historique=[]
 
 def distance(point, liste_points):
-    distances=[]
-    for p in liste_points:
-        distances.append(np.sum(np.power(p-np.expand_dims(point, axis=-1), 2)))
-    return distances
+    return [
+        np.sum(np.power(p - np.expand_dims(point, axis=-1), 2))
+        for p in liste_points
+    ]
 
 def trace_historique(tab_points, longueur, couleur=(0, 255, 255)):
     historique=np.array(tab_points)
@@ -47,11 +47,10 @@ def trace_historique(tab_points, longueur, couleur=(0, 255, 255)):
                  2)
 
 data=genfromtxt(fichier_label, delimiter=',')
-id_frame=0
 id_objet=0
 
 start=0
-for image in glob.glob(dir_images+"*.jpg"):
+for id_frame, image in enumerate(glob.glob(dir_images+"*.jpg")):
     frame=cv2.imread(image)
 
     # Prediction de l'ensemble des objets + affichage
@@ -111,8 +110,8 @@ for image in glob.glob(dir_images+"*.jpg"):
     nouveaux_objets=np.ones((len(points)))
     tab_distances=[]
     if len(objets_points):
-        for point_id in range(len(points)):
-            distances=distance(points[point_id], objets_points)
+        for point in points:
+            distances = distance(point, objets_points)
             tab_distances.append(distances)
 
         tab_distances=np.array(tab_distances)
@@ -177,4 +176,3 @@ for image in glob.glob(dir_images+"*.jpg"):
         trace=not trace
     if key==ord('q'):
         quit()
-    id_frame+=1

@@ -17,13 +17,10 @@ tab_labels=[]
 
 tab_panneau, tab_image_panneau=common.lire_images_panneaux(common.dir_images_panneaux, common.size)
 
-id=0
-for image in tab_image_panneau:
+for id, image in enumerate(tab_image_panneau):
     lot=dataset.create_lot_img(image, 12000)
     tab_images=np.concatenate((tab_images, lot))
     tab_labels=np.concatenate([tab_labels, np.full(len(lot), id)])
-    id+=1
-                
 tab_panneau=np.array(tab_panneau)
 tab_images=np.array(tab_images, dtype=np.float32)/255
 tab_labels=np.array(tab_labels, dtype=np.float32).reshape([-1, 1])

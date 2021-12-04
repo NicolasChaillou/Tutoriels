@@ -72,7 +72,7 @@ while True:
         video.write(frame)
         cpt_fin_mouvement=fin_mouvement
     else:
-        cpt_fin_mouvement=cpt_fin_mouvement-1
+        cpt_fin_mouvement -= 1
         if fichier_video is not None:
             if cpt_fin_mouvement==0:
                 video.release()

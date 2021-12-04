@@ -9,12 +9,10 @@ marge=70
 
 while True:
     ret, frame=cap.read()
-    tab_face=[]
     tickmark=cv2.getTickCount()
     gray=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     face=face_cascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=4, minSize=(5, 5))
-    for x, y, w, h in face:
-        tab_face.append([x, y, x+w, y+h])
+    tab_face = [[x, y, x+w, y+h] for x, y, w, h in face]
     face=profile_cascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=4)
     for x, y, w, h in face:
         tab_face.append([x, y, x+w, y+h])
@@ -23,11 +21,9 @@ while True:
     for x, y, w, h in face:
         tab_face.append([width-x, y, width-(x+w), y+h])
     tab_face=sorted(tab_face, key=operator.itemgetter(0, 1))
-    index=0
-    for x, y, x2, y2 in tab_face:
+    for index, (x, y, x2, y2) in enumerate(tab_face):
         if not index or (x-tab_face[index-1][0]>marge or y-tab_face[index-1][1]>marge):
             cv2.rectangle(frame, (x, y), (x2, y2), (0, 0, 255), 2)
-        index+=1
     if cv2.waitKey(1)&0xFF==ord('q'):
         break
     fps=cv2.getTickFrequency()/(cv2.getTickCount()-tickmark)

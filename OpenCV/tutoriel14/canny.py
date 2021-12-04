@@ -46,7 +46,7 @@ while True:
     if key==ord('s'):
         stop=not stop
     if key==ord('a'):
-        for cpt in range(200):
+        for _ in range(200):
             ret, frame=cap.read()
             image=frame.copy()
 cap.release()

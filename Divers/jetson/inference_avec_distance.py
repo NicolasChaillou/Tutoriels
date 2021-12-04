@@ -38,9 +38,9 @@ while True:
     depth_colormap=cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
 
     start=time.time()
-    cuda_image=jetson.utils.cudaFromNumpy(color_image)    
+    cuda_image=jetson.utils.cudaFromNumpy(color_image)
     detections=net.Detect(cuda_image, color_image.shape[1], color_image.shape[0])
-    
+
     print("#######################################")
     print("Temps", time.time()-start)
     for detection in detections:
@@ -53,12 +53,9 @@ while True:
         if detection.ClassID==1:
             cv2.rectangle(color_image, (x1, y1), (x2, y2), (255, 0, 0), 2)
             dist=depth_frame.get_distance(int(x), int(y))
-            if dist<1:
-                msg="{:2.0f} cm".format(dist*100)
-            else:
-                msg="{:4.2f} m".format(dist)
+            msg = "{:2.0f} cm".format(dist*100) if dist<1 else "{:4.2f} m".format(dist)
             cv2.putText(color_image, msg, (int(x), int(y)), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
-            
+
     cv2.imshow('RealSense1', depth_colormap)
     cv2.imshow('RealSense2', color_image)
 

@@ -23,5 +23,4 @@ def model_embedding(nbr_cc, embeddings_size):
     result=layers.Dense(embeddings_size, activation=None)(result)
     embeddings=layers.Lambda(lambda x: tf.math.l2_normalize(x, axis=1))(result)
 
-    model=models.Model(inputs=entree, outputs=embeddings)
-    return model
+    return models.Model(inputs=entree, outputs=embeddings)

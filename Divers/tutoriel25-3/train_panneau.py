@@ -45,7 +45,7 @@ nbr_np=int(len(tab_images)/2)
 id=1
 nbr=0
 tab=[]
-for cpt in range(nbr_np):
+for _ in range(nbr_np):
     file=common.dir_images_sans_panneaux+"/{:d}.png".format(id)
     if not os.path.isfile(file):
         break
@@ -96,8 +96,7 @@ def train(train_ds, nbr_entrainement):
 def my_loss(labels, preds):
     labels_reshape=tf.reshape(labels, (-1, 1))
     preds_reshape=tf.reshape(preds, (-1, 1))
-    result=loss_object(labels_reshape, preds_reshape)
-    return result
+    return loss_object(labels_reshape, preds_reshape)
     
 def test(test_ds):
   start=time.time()

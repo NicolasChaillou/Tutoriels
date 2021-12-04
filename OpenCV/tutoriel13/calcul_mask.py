@@ -41,7 +41,7 @@ while True:
     if key==ord('m'):
         seuil-=1
     if key==ord('a'):
-        for cpt in range(20):
+        for _ in range(20):
             ret, frame=cap.read()
 
 cap.release()

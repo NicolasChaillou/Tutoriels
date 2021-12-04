@@ -111,10 +111,10 @@ while True:
     if key == ord('q'):
         break
     if key==ord('a'):
-        for i in range(100):
+        for _ in range(100):
             toto.read()
     if key==ord('z'):
-        for i in range(2000):
+        for _ in range(2000):
             toto.read()
 
 cv2.destroyAllWindows()

@@ -18,13 +18,12 @@ fichier_log=open(prefix_log_file+str(id_file)+".csv", "w")
 print("Création du fichier de log", prefix_log_file+str(id_file)+".csv")
 
 def model(nbr_inputs, nbr_hidden, nbr_actions):
-  entree=layers.Input(shape=(nbr_inputs), dtype='float32')
-  result=layers.Dense(32, activation='relu')(entree)
-  result=layers.Dense(32, activation='relu')(result)
-  sortie=layers.Dense(nbr_actions, activation='softmax')(result)
+    entree=layers.Input(shape=(nbr_inputs), dtype='float32')
+    result=layers.Dense(32, activation='relu')(entree)
+    result=layers.Dense(32, activation='relu')(result)
+    sortie=layers.Dense(nbr_actions, activation='softmax')(result)
 
-  my_model=models.Model(inputs=entree, outputs=sortie)
-  return my_model
+    return models.Model(inputs=entree, outputs=sortie)
 
 def calcul_discount_rate(rewards_history, gamma, normalize=False):
     result=[]

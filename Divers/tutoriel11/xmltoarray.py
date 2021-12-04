@@ -24,10 +24,7 @@ def xml_to_dataset(dir, size=None):
                 tab_label.append(obj['name'])
 
     l=list(set(tab_label))
-    tab_one_hot=[]
-    for e in tab_label:
-        tab_one_hot.append(np.eye(len(l))[l.index(e)])
-        
+    tab_one_hot = [np.eye(len(l))[l.index(e)] for e in tab_label]
     return tab_image, l, tab_one_hot
 
 tab_image, tab_label, tab_one_hot=xml_to_dataset("./", (32, 32))

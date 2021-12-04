@@ -61,8 +61,6 @@ for episode in range(epoch):
 
     if end_epsilon>=episode>=start_epsilon:
         epsilon-=epsilon_decay_value
-        if epsilon<epsilon_min:
-            epsilon=epsilon_min
-
+        epsilon = max(epsilon, epsilon_min)
 np.save("MountainCar_qtable", q_table)
 env.close()

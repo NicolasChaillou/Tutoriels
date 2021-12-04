@@ -15,11 +15,11 @@ while True:
     for face in faces:
         landmarks=predictor(gray, face)
         i=np.zeros(shape=(frame.shape), dtype=np.uint8)
-        for n in range(0, 68):
+        for n in range(68):
             x=landmarks.part(n).x
             y=landmarks.part(n).y
             cv2.circle(frame, (x, y), 3, (255, 0, 0), -1)
-            if n==30 or n==36 or n==45:
+            if n in [30, 36, 45]:
                 cv2.circle(i, (x, y), 3, (255, 255, 0), -1)
             else:
                 cv2.circle(i, (x, y), 3, (255, 0, 0), -1)

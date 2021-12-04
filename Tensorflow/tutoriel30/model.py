@@ -36,5 +36,4 @@ def model(size, nbr_cc):
     result=layers.Dense(1024, activation='relu')(result)
     sortie=layers.Dense(1, activation='sigmoid')(result)
 
-    model=models.Model(inputs=entree, outputs=sortie)
-    return model
+    return models.Model(inputs=entree, outputs=sortie)

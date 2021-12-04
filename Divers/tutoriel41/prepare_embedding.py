@@ -16,7 +16,7 @@ for dir_identite in os.listdir(dir_identites):
     fichiers=[]
     for ext in ["*.jpg", "*.jpeg", "*.png"]:
         fichiers.extend(glob.glob(dir_identites+"/"+dir_identite+"/"+ext))
-    if len(fichiers)==0:
+    if not fichiers:
         print("Repertoire vide", dir_identite)
         continue
     for fichier in fichiers:
@@ -24,7 +24,7 @@ for dir_identite in os.listdir(dir_identites):
         embedding=face_recognition.face_encodings(image)[0]
         face_encodings.append(embedding)
         face_names.append(dir_identite.replace('_', ' '))
-            
+
 np.save("face_encodings", np.array(face_encodings))
 np.save("face_names", np.array(face_names))
 

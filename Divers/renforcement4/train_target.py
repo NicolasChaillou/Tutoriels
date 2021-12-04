@@ -40,13 +40,11 @@ def model(nbr_cc=8):
 
   result=layers.Dense(512, activation='relu')(result)
   sortie=layers.Dense(nbr_action)(result)
-    
-  model=models.Model(inputs=entree, outputs=sortie)
-  return model
+
+  return models.Model(inputs=entree, outputs=sortie)
 
 def transform_img(image):
-  result=np.expand_dims(image[:170, :, 0], axis=-1)
-  return result
+  return np.expand_dims(image[:170, :, 0], axis=-1)
 
 def simulation(epsilon, debug=False):
   if debug:
@@ -57,14 +55,14 @@ def simulation(epsilon, debug=False):
   tab_actions=[]
   tab_next_observations=[]
   tab_done=[]
-  
+
   ######
   observations=env.reset()
   vie=3
-  for i in range(decalage_debut-taille_sequence):
+  for _ in range(decalage_debut-taille_sequence):
     env.step(0)
   tab_sequence=[]
-  for i in range(taille_sequence):
+  for _ in range(taille_sequence):
     observation, reward, done, info=env.step(0)
     img=transform_img(observation)
     tab_sequence.append(img)
@@ -89,9 +87,8 @@ def simulation(epsilon, debug=False):
       vie=info['ale.lives']
       if h==0:
         tab_done.append(True)
-    else:
-      if h==0:
-        tab_done.append(done)
+    elif h==0:
+      tab_done.append(done)
     if h==0:
       tab_rewards.append(reward)
     if done:
@@ -123,8 +120,7 @@ def simulation(epsilon, debug=False):
       tab_next_observations.append(np.concatenate(tab_sequence, axis=-1))
 
 def my_loss(y, q):
-  loss=tf.reduce_mean(tf.math.square(y-q))
-  return loss
+  return tf.reduce_mean(tf.math.square(y-q))
 
 @tf.function
 def train_step(reward, action, observation, next_observation, done):

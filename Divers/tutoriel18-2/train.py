@@ -73,7 +73,7 @@ for dir in ["/usr/share/fonts/truetype/ubuntu-font-family/", "/usr/share/fonts/t
             if file.endswith("ttf"):
                 print(root+"/"+file)
                 for i in range(1, 10):
-                    for cpt in range(nbr):
+                    for _ in range(nbr):
                         image=Image.new("L", (28, 28))
                         draw=ImageDraw.Draw(image)
                         font=ImageFont.truetype(root+"/"+file, np.random.randint(26, 32))
@@ -86,24 +86,17 @@ for dir in ["/usr/share/fonts/truetype/ubuntu-font-family/", "/usr/share/fonts/t
                         tab_images.append(image_m)
                         tab_labels.append(np.eye(10)[i])
                 image=np.zeros((28, 28, 1))
-                for cpt in range(3*nbr):
+                for _ in range(3*nbr):
                     image_m=modif_image(image, 1.05+np.random.rand())
                     tab_images.append(image_m)
                     tab_labels.append(np.eye(10)[0])
-                    
+
 tab_images=np.array(tab_images)
 tab_labels=np.array(tab_labels)
 
 tab_images=tab_images/255
 
 tab_images, tab_labels=shuffle(tab_images, tab_labels)
-
-if False: # Changer en True si vous voulez voir les images générées
-    for i in range(len(tab_images)):
-        cv2.imshow('chiffre', tab_images[i].reshape(28, 28, 1))
-        print(tab_labels[i], np.argmax(tab_labels[i]))
-        if cv2.waitKey()&0xFF==ord('q'):
-            break
 
 print("Nbr:", len(tab_images))
 

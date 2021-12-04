@@ -30,11 +30,11 @@ while True:
 	if key==ord('m'):
 		id_method_lbp=(id_method_lbp+1)%len(method_lbp)
 	if key==ord('i'):
-		radius=radius+1
+		radius += 1
 	if key==ord('k'):
 		radius=max(3, radius-1)
 	if key==ord('o'):
-		numPoints=numPoints+1
+		numPoints += 1
 	if key==ord('l'):
 		numPoints=max(3, numPoints-1)
 	if key==ord('q'):

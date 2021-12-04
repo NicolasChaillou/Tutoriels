@@ -39,7 +39,7 @@ for episode in range(epoch):
             print("Sauvegarde ...")
             np.save("CartPole_qtable", q_table)
             best_score=mean_score
-        alpha=alpha*0.99
+        alpha *= 0.99
 
     else:
         render=False
@@ -76,7 +76,5 @@ for episode in range(epoch):
 
     if end_epsilon>=episode>=start_epsilon:
         epsilon-=epsilon_decay_value
-        if epsilon<epsilon_min:
-            epsilon=epsilon_min
-
+        epsilon = max(epsilon, epsilon_min)
 env.close()

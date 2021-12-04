@@ -12,25 +12,25 @@ import config
 def rotateImage(image, angle):
     image_center=tuple(np.array(image.shape[1::-1])/2)
     rot_mat=cv2.getRotationMatrix2D(image_center, angle, 1.0)
-    result=cv2.warpAffine(image, rot_mat, image.shape[1::-1], flags=cv2.INTER_LINEAR)
-    return result
+    return cv2.warpAffine(
+        image, rot_mat, image.shape[1::-1], flags=cv2.INTER_LINEAR
+    )
 
 def complete_dataset(image, image_ellipse, tab_images, tab_labels):
     contours, hierarchy=cv2.findContours(image_ellipse[:, :, 0], cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     if len(contours) is not 2:
         return 1
-    else:
-        if len(contours[0])<6 or len(contours[1])<6:
-            return 1
-        (x1, y1), (ma1, MA1), a1=cv2.fitEllipse(contours[0])
-        (x2, y2), (ma2, MA2), a2=cv2.fitEllipse(contours[1])
-        x=(x1+x2)/2
-        y=(y1+y2)/2
-        ma=(ma1+ma2)/2
-        MA=(MA1+MA2)/2
-        a=(a1+a2)/2
-        tab_images.append(image[:, :, 0])
-        tab_labels.append([x/config.norm, y/config.norm, MA/config.norm, ma/config.norm, a/180])
+    if len(contours[0])<6 or len(contours[1])<6:
+        return 1
+    (x1, y1), (ma1, MA1), a1=cv2.fitEllipse(contours[0])
+    (x2, y2), (ma2, MA2), a2=cv2.fitEllipse(contours[1])
+    x=(x1+x2)/2
+    y=(y1+y2)/2
+    ma=(ma1+ma2)/2
+    MA=(MA1+MA2)/2
+    a=(a1+a2)/2
+    tab_images.append(image[:, :, 0])
+    tab_labels.append([x/config.norm, y/config.norm, MA/config.norm, ma/config.norm, a/180])
     return 0
         
 def prepare_data(fichier):

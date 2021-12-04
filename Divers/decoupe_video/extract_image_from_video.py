@@ -16,7 +16,7 @@ if not os.path.isdir(nom_film):
 id=0
 while True:
     print("#", end="", flush=True)
-    for cpt in range(500):
+    for _ in range(500):
         ret, frame=cap.read()
         if frame is None:
             print("")

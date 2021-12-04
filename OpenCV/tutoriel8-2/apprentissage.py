@@ -16,7 +16,7 @@ for root, dirs, files in os.walk(image_dir):
         for file in files:
             if file.endswith("png"):
                 path=os.path.join(root, file)
-                if not label in label_ids:
+                if label not in label_ids:
                     label_ids[label]=current_id
                     current_id+=1
                 id_=label_ids[label]

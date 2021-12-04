@@ -6,14 +6,12 @@ import cv2
 def convolution(couche_prec, taille_noyau, nbr_noyau):
     w=tf.Variable(tf.random.truncated_normal(shape=(taille_noyau, taille_noyau, int(couche_prec.get_shape()[-1]), nbr_noyau)))
     b=np.zeros(nbr_noyau)
-    result=tf.nn.conv2d(couche_prec, w, strides=[1, 1, 1, 1], padding='SAME')+b
-    return result
+    return tf.nn.conv2d(couche_prec, w, strides=[1, 1, 1, 1], padding='SAME')+b
         
 def fc(couche_prec, nbr_neurone):
     w=tf.Variable(tf.random.truncated_normal(shape=(int(couche_prec.get_shape()[-1]), nbr_neurone), dtype=tf.float32))
     b=tf.Variable(np.zeros(shape=(nbr_neurone)), dtype=tf.float32)
-    result=tf.matmul(couche_prec, w)+b
-    return result
+    return tf.matmul(couche_prec, w)+b
 
 taille_batch=100
 nbr_entrainement=3
@@ -82,8 +80,8 @@ with tf.Session() as s:
     plot.plot(tab_test, label="Test error")
     plot.legend(loc="upper right")
     plot.show()
-    
-    resulat=s.run(scso, feed_dict={ph_images: mnist_test_images[0:taille_batch]})
+
+    resulat = s.run(scso, feed_dict={ph_images: mnist_test_images[:taille_batch]})
     np.set_printoptions(formatter={'float': '{:0.3f}'.format})
     for image in range(taille_batch):
         print("image", image)

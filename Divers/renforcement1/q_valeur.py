@@ -13,14 +13,12 @@ R=[[[ 0.00,  0.00, 0.00], [ 0.00,  0.00,  0.00]],
 
 gamma=0.95
 
+tab_somme_action=[]
 for i in range(200):
     time.sleep(0.05)
-    tab_somme_action=[]
     for S in range(3):
         for A in range(2):
-            somme=0
-            for s in range(3):
-                somme+=T[S][A][s]*(R[S][A][s]+gamma*np.max(Q[s]))
+            somme = sum(T[S][A][s]*(R[S][A][s]+gamma*np.max(Q[s])) for s in range(3))
             Q[S][A]=somme
 
     print("---------------------------------")
